@@ -15,8 +15,8 @@ import {
   faFeather,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useCompendiumListQuery } from "../../../components/queries/compendium/useCompendiumListQuery";
-import { useCompendiumItemQuery } from "../../../components/queries/compendium/useCompendiumItemQuery";
+import { useCompendiumListQuery } from "../../../lib/queries/compendium/useCompendiumListQuery";
+import { useCompendiumItemQuery } from "../../../lib/queries/compendium/useCompendiumItemQuery";
 import Link from "next/link";
 import { useEffect } from "react";
 import { CompendiumItem } from "../../../components/CompendiumItem";

@@ -6,11 +6,29 @@ A Virtual Tabletop for the final assignment of Web Development at CEFET-MG.
 
 ## Getting Started
 
-First, run the development server:
+### Connecting with the Backend
+
+#### Option 1: With backend running locally
+
+Checkout to the [api-vtt](https://github.com/beerholders/api-vtt) and execute the local devloop setup. The app will run with the default url `http://localhost:3001/api`.
+
+Then run the development server:
 
 ```bash
 npm run dev
 ```
+
+#### Option 2: With an external backend
+
+Our auto-deployed backend server: `https://api-vtt.herokuapp.com`
+
+Run the development server specifying the backend url:
+
+```bash
+BACKEND_URL=https://api-vtt.herokuapp.com npm run dev
+```
+
+#### Done!
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

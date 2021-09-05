@@ -5,8 +5,6 @@ import {
   Modal,
   Layout,
   Menu,
-  Row,
-  Col,
   Form,
   Input,
   Typography,
@@ -19,8 +17,14 @@ import Link from "next/link";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ImageHolder } from "../components/ImageHolder";
 import { css } from "@emotion/react";
+import {
+  useCurrentUser,
+  withAuthenticationRequired,
+} from "../lib/LoginProvider";
+import { useRouter } from "next/router";
+import { useLogoutMutation } from "../lib/queries/auth/useLogoutMutation";
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 const CAMPANHAS = [
   { id: "123", name: "Rasimash", src: "./img/RasimashWpp.jpg", type: "img" },
@@ -90,6 +94,13 @@ const PJSheetList = ({ pjs }) => {
 };
 
 function ActionsMenu(props) {
+  const currentUser = useCurrentUser();
+  const router = useRouter();
+  const logout = useLogoutMutation({
+    onSettled() {
+      router.push("/login");
+    },
+  });
   return (
     <Menu
       {...props}
@@ -102,11 +113,9 @@ function ActionsMenu(props) {
           <a>Compendium</a>
         </Link>
       </Menu.Item>
-      <Menu.SubMenu key="user" icon={<UserOutlined />} title="José da Silva">
-        <Menu.Item key="logout">
-          <Link href="/login">
-            <a>Logout</a>
-          </Link>
+      <Menu.SubMenu key="user" icon={<UserOutlined />} title={currentUser.name}>
+        <Menu.Item key="logout" onClick={() => logout.mutate()}>
+          <a>Logout</a>
         </Menu.Item>
       </Menu.SubMenu>
     </Menu>
@@ -142,23 +151,22 @@ const colmeiaStyle = css`
   background-color: var(--cor-dos-frames);
 `;
 
-export default function Home() {
+export default withAuthenticationRequired(function Home() {
   const [isCreateGameModalVisible, setIsCreateGameModalVisible] =
     useState(false);
+
   return (
     <Layout>
       <Head>
         <title>BeeHolder</title>
       </Head>
       <Header>
-        <Row justify="space-between">
-          <Col span={8}>
-            <VTTName css={{ float: "left" }} />
-          </Col>
-          <Col span={16} push={12}>
+        <div css={{ position: "relative" }}>
+          <VTTName css={{ float: "left" }} />
+          <div css={{ position: "absolute", right: 0 }}>
             <ActionsMenu />
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Header>
       <Layout css={{ marginTop: 40 }}>
         <Content>
@@ -197,4 +205,4 @@ export default function Home() {
       </Layout>
     </Layout>
   );
-}
+});
