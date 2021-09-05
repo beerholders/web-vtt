@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ConfigProvider } from "antd";
 import ptBR from "antd/lib/locale/pt_BR";
 import { LoginProvider } from "../lib/LoginProvider";
+// to do: remove global import
+import '../styles/playerSheet.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
