@@ -24,7 +24,7 @@ function handleClassAndLevelChange(classAndLevel, onChange) {
 }
 
 let bioInfo = {
-  img: './beeholder-logo.png',
+  img: './img/Praestes.png',
   bio: 'O BeeHolder é uma criatura lendária.',
   notes: 'Ele tem a capacidade de segurar abelhas, ou cervejas, a depender do humor dele.'
 }
@@ -509,11 +509,11 @@ function Sheet({character, page, onChange}) {
             <div class="hd-ds">
               <div class="total">
                 <label htmlFor="total-hd">Total</label>
-                <Input type="text" id="total-hd" placeholder="3d8"/>
+                <Input type="number" id="total-hd" value={character.level}/>
               </div>
               <div class="remaining">
                 <label htmlFor="remaining-hd">Hit Dice</label>
-                <Input type="text" id="remaining-hd" placeholder="3"/>
+                <Input type="text" id="remaining-hd"/>
               </div>
             </div>
           </div>

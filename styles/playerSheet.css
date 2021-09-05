@@ -324,7 +324,7 @@ rules for the attributes
 .att-label label {
     position: absolute;
     left: 0;
-    top: 1px;
+    top: -5px;
     transform: translate(0%, 50%);
     width: 100%;
     font-size: 8px;
@@ -763,7 +763,7 @@ rules for attacks and spellcasting
     margin: 0 15px;
 }
 
-.equipment > div tbody tr {
+tbody {
     vertical-align: top;
 }
 
