@@ -38,7 +38,6 @@ export default function SignUp() {
     signUpMutation.mutate(data);
   };
 
-  console.log(signUpMutation);
 
   return (
     <div css={paginaStyle}>
