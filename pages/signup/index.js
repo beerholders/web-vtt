@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Alert, Button, Form, Input } from "antd";
 import { css } from "@emotion/react";
+import { useSignupMutation } from "../../lib/queries/auth/useSignupMutation";
 import { useLoginMutation } from "../../lib/queries/auth/useLoginMutation";
 
 const paginaStyle = css`
@@ -22,40 +23,28 @@ const logoStyle = css`
   width: 100px;
 `;
 
-const submitDiv = css`
-  display: flex;
-  justify-content: space-between;
-  padding: 0 16.5%;
-`;
-
-const signupLik = css`
-  cursor: pointer;
-`
-
 const formItemStyle = {
   marginBottom: 16,
 };
 
-export default function Login() {
+export default function SignUp() {
   const router = useRouter();
+  const signUpMutation = useSignupMutation({});
   const loginMutation = useLoginMutation({
     onSuccess() {
       router.push("/");
     },
   });
-
   const handleSubmit = (data) => {
+    signUpMutation.mutate(data);
     loginMutation.mutate(data);
-  };
-
-  const handleSignUpClick = () => {
-    router.push("/signup");
+    
   };
 
   return (
     <div css={paginaStyle}>
       <Head>
-        <title>Login</title>
+        <title>Sign up</title>
         <link rel="icon" href="/img/favicon.ico" />
       </Head>
 
@@ -67,14 +56,13 @@ export default function Login() {
           src="/img/beeholder-logo.png"
           alt="Ícone com a ilustração de um beholder amarelo e preto (cores de abelha)"
         />
-        <h2>Bem-vindo ao BeeHolder!</h2>
-        <h3>Faça login para jogar com seus amigos.</h3>
-        {loginMutation.isError && (
+        <h3>Cadastre sua conta para jogar com seus amigos.</h3>
+        {signUpMutation.isError && (
           <Alert
             closable
             type="error"
-            message="Falha no login"
-            description="Não foi possível efetuar o login com os dados informados."
+            message="Falha ao cadastrar usuário"
+            description="Não foi possível efetuar o cadastro com os dados informados."
           />
         )}
         <Form
@@ -95,26 +83,31 @@ export default function Login() {
           </Form.Item>
           <Form.Item
             css={formItemStyle}
+            label="Nome"
+            name="name"
+            rules={[
+              { required: true, message: "Por favor digite seu nome de usuário" },
+            ]}
+          >
+            <Input type="name" placeholder="Nome" />
+          </Form.Item>
+          <Form.Item
+            css={formItemStyle}
             label="Senha"
             name="password"
             rules={[{ required: true, message: "Por favor digite sua senha!" }]}
           >
             <Input type="password" placeholder="Senha" />
           </Form.Item>
-          <div css={submitDiv}>
-            <h3 css={signupLik} onClick={() => handleSignUpClick()}>
-              {"Não tem uma conta? Cadastre-se"}
-            </h3>
-            <Button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              loading={loginMutation.isLoading}
-              disabled={loginMutation.isSuccess}
-            >
-              Entrar
-            </Button>
-          </div>
+          <Button
+            size="large"
+            type="primary"
+            htmlType="submit"
+            loading={signUpMutation.isLoading}
+            disabled={signUpMutation.isSuccess}
+          >
+            Cadastrar
+          </Button>
         </Form>
       </main>
     </div>
