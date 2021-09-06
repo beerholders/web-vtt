@@ -29,17 +29,15 @@ const formItemStyle = {
 
 export default function SignUp() {
   const router = useRouter();
-  const signUpMutation = useSignupMutation({});
-  const loginMutation = useLoginMutation({
+  const signUpMutation = useSignupMutation({
     onSuccess() {
       router.push("/");
     },
   });
   const handleSubmit = (data) => {
     signUpMutation.mutate(data);
-    loginMutation.mutate(data);
-    
   };
+
 
   return (
     <div css={paginaStyle}>
@@ -62,7 +60,7 @@ export default function SignUp() {
             closable
             type="error"
             message="Falha ao cadastrar usuário"
-            description="Não foi possível efetuar o cadastro com os dados informados."
+            description={"Não foi possível cadastrar o usuário."}
           />
         )}
         <Form
@@ -86,7 +84,10 @@ export default function SignUp() {
             label="Nome"
             name="name"
             rules={[
-              { required: true, message: "Por favor digite seu nome de usuário" },
+              {
+                required: true,
+                message: "Por favor digite seu nome de usuário",
+              },
             ]}
           >
             <Input type="name" placeholder="Nome" />
