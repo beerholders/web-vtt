@@ -91,6 +91,11 @@ const PJSheetList = ({ pjs }) => {
           </Link>          
         </List.Item>
       )}
+      footer={(
+        <Link href="#">
+          Criar ficha
+        </Link>
+      )}
     />
   );
 };

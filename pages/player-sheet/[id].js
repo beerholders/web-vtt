@@ -4,6 +4,10 @@ import React, { useReducer } from 'react';
 import { merge } from 'lodash';
 import { Input } from 'antd';
 import { css } from "@emotion/react";
+import {
+  withAuthenticationRequired,
+} from "../../lib/LoginProvider";
+import { usePlayerSheetQuery } from '../../lib/queries/player-sheet/usePlayerSheetQuery';
 
 const sheetStyle = css`
 html {
@@ -928,160 +932,6 @@ let bioInfo = {
   notes: 'Ele tem a capacidade de segurar abelhas, ou cervejas, a depender do humor dele.'
 }
 
-let characterInfo = {
-  name: 'Praestes Solis',
-  class: 'Cleric',
-  level: 7,
-  background: 'Acolyte',
-  race: 'Half-Elf',
-  alignment: 'Lawful Neutral',
-  xp: 0,
-  traits: {
-    personality: "I believe that anything worth doing is worth doing right. I can't help it- I'm a perfectionist.",
-    ideals: "Generosity. My talents were given to me so that I could use them to benefit the world.",
-    bonds: "I created a great work for someone, and then found them unworthy to receive it. I'm still looking for someone worthy.",
-    flaws: "I'm never satisfied with what I have- I always want more."
-  },
-  attributes: {
-    scores: {
-      str: {
-        value: 8,
-        proficiency: false
-      },
-      dex: {
-        value:12,
-        proficiency: false
-      },
-      con: {
-        value:15,
-        proficiency: false
-      },
-      int: {
-        value:14,
-        proficiency: true
-      },
-      wis: {
-        value:18,
-        proficiency: true
-      },
-      cha: {
-        value:12,
-        proficiency: false
-      },
-    },
-    AC: 16,
-    speed: 30,
-    max_hp: 44,
-    current_hp: 44,
-    temporary_hp: 0,
-    inspiration: true,
-    skills_proficiency: {
-      acrobatics: true,
-      animal_handling: false,
-      arcana: true,
-      athletics: false,
-      deception: false,
-      history: true,
-      insight: false,
-      intimidation: false,
-      medicine: true,
-      nature: false,
-      perception: false,
-      performance: false,
-      persuasion: false,
-      religion: true,
-      sleigth_of_hand: false,
-      stealth: false,
-      survival: false
-    }
-  },
-  attacks_and_spellcasting: [
-    {
-      name: 'Mace',
-      attack_bonus: 'str',
-      damage: '1d6',
-      type: 'bludgeoning'
-    },
-    {
-      name: 'Shortsword',
-      attack_bonus: 'dex',
-      damage: '1d6',
-      type: 'slashing'
-    },
-    {
-      name: 'Fireball',
-      attack_bonus: '0',
-      damage: '8d6',
-      type: 'fire'
-    }
-  ],
-  equipment: {
-    cp: 15,
-    sp: 10,
-    ep: 0,
-    gp: 40,
-    pp: 0,
-    items: [
-      {
-        name: 'Mace',
-        weight: 4
-      },
-      {
-        name: 'Shortsword',
-        weight: 2
-      },
-      {
-        name: 'Chain Mail',
-        weight: 55
-      }
-    ]
-  },
-  spellcasting: {
-    attribute: 'wis',
-    features: 'I use my Arcane Focus to cast spells',
-    pouch_inventory: [
-      'Arcane Focus'
-    ],
-    cantrips: [
-      'Light',
-      'Minor Ilussion',
-      'Sacred Flame'
-    ],
-    level_1: [
-      'Burning Hands',
-      'Cure Wounds',
-      'Detect Magic',
-      'Faerie Fire'
-    ],
-    level_2: [
-      'Flaming Sphere',
-      'Scorching Ray'
-    ],
-    level_3: [
-      'Daylight',
-      'Fireball'
-    ],
-    level_4: [
-
-    ],
-    level_5: [
-
-    ],
-    level_6: [
-
-    ],
-    level_7: [
-
-    ],
-    level_8: [
-
-    ],
-    level_9: [
-
-    ]
-  }
-}
-
 let pageSelector = {
   bio: '',
   sheet: 'active',
@@ -1754,11 +1604,166 @@ function Spells({character, page, onChange}) {
   )
 }
 
-export default function PlayerSheet() {
+function PlayerSheet() {
+
+  let characterInfo = {
+    name: 'Praestes Solis',
+    class: 'Cleric',
+    level: 7,
+    background: 'Acolyte',
+    race: 'Half-Elf',
+    alignment: 'Lawful Neutral',
+    xp: 0,
+    traits: {
+      personality: "I believe that anything worth doing is worth doing right. I can't help it- I'm a perfectionist.",
+      ideals: "Generosity. My talents were given to me so that I could use them to benefit the world.",
+      bonds: "I created a great work for someone, and then found them unworthy to receive it. I'm still looking for someone worthy.",
+      flaws: "I'm never satisfied with what I have- I always want more."
+    },
+    attributes: {
+      scores: {
+        str: {
+          value: 8,
+          proficiency: false
+        },
+        dex: {
+          value:12,
+          proficiency: false
+        },
+        con: {
+          value:15,
+          proficiency: false
+        },
+        int: {
+          value:14,
+          proficiency: true
+        },
+        wis: {
+          value:18,
+          proficiency: true
+        },
+        cha: {
+          value:12,
+          proficiency: false
+        },
+      },
+      AC: 16,
+      speed: 30,
+      max_hp: 44,
+      current_hp: 44,
+      temporary_hp: 0,
+      inspiration: true,
+      skills_proficiency: {
+        acrobatics: true,
+        animal_handling: false,
+        arcana: true,
+        athletics: false,
+        deception: false,
+        history: true,
+        insight: false,
+        intimidation: false,
+        medicine: true,
+        nature: false,
+        perception: false,
+        performance: false,
+        persuasion: false,
+        religion: true,
+        sleigth_of_hand: false,
+        stealth: false,
+        survival: false
+      }
+    },
+    attacks_and_spellcasting: [
+      {
+        name: 'Mace',
+        attack_bonus: 'str',
+        damage: '1d6',
+        type: 'bludgeoning'
+      },
+      {
+        name: 'Shortsword',
+        attack_bonus: 'dex',
+        damage: '1d6',
+        type: 'slashing'
+      },
+      {
+        name: 'Fireball',
+        attack_bonus: '0',
+        damage: '8d6',
+        type: 'fire'
+      }
+    ],
+    equipment: {
+      cp: 15,
+      sp: 10,
+      ep: 0,
+      gp: 40,
+      pp: 0,
+      items: [
+        {
+          name: 'Mace',
+          weight: 4
+        },
+        {
+          name: 'Shortsword',
+          weight: 2
+        },
+        {
+          name: 'Chain Mail',
+          weight: 55
+        }
+      ]
+    },
+    spellcasting: {
+      attribute: 'wis',
+      features: 'I use my Arcane Focus to cast spells',
+      pouch_inventory: [
+        'Arcane Focus'
+      ],
+      cantrips: [
+        'Light',
+        'Minor Ilussion',
+        'Sacred Flame'
+      ],
+      level_1: [
+        'Burning Hands',
+        'Cure Wounds',
+        'Detect Magic',
+        'Faerie Fire'
+      ],
+      level_2: [
+        'Flaming Sphere',
+        'Scorching Ray'
+      ],
+      level_3: [
+        'Daylight',
+        'Fireball'
+      ],
+      level_4: [
+  
+      ],
+      level_5: [
+  
+      ],
+      level_6: [
+  
+      ],
+      level_7: [
+  
+      ],
+      level_8: [
+  
+      ],
+      level_9: [
+  
+      ]
+    }
+  }
 
   const router = useRouter();
   const { id } = router.query;
-  console.log(id);
+
+  const { data } = usePlayerSheetQuery(id);
 
   const [page, setPage] = useReducer((currentPage, changes) => {
     return merge({}, currentPage, changes)
@@ -1788,3 +1793,5 @@ export default function PlayerSheet() {
       </html>
   );
 }
+
+export default withAuthenticationRequired(PlayerSheet);
