@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import React, { useReducer, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useReducer } from 'react';
 import { merge } from 'lodash';
 import { Input } from 'antd';
 import { css } from "@emotion/react";
@@ -906,9 +907,6 @@ rules for the spellcasting section
 `
 
 function getScoreModifier(score, level, proficiency) {
-  console.log(score);
-  console.log(level);
-  console.log(proficiency);
   const proficiencyBonus = proficiency ? getProficiencyModifier(level) : 0;
   return Math.floor((score - 10)/2) + proficiencyBonus;
 }
@@ -925,7 +923,7 @@ function handleClassAndLevelChange(classAndLevel, onChange) {
 }
 
 let bioInfo = {
-  img: './img/Praestes.png',
+  img: './img/beeholder-logo.png',
   bio: 'O BeeHolder é uma criatura lendária.',
   notes: 'Ele tem a capacidade de segurar abelhas, ou cervejas, a depender do humor dele.'
 }
@@ -1757,6 +1755,10 @@ function Spells({character, page, onChange}) {
 }
 
 export default function PlayerSheet() {
+
+  const router = useRouter();
+  const { id } = router.query;
+  console.log(id);
 
   const [page, setPage] = useReducer((currentPage, changes) => {
     return merge({}, currentPage, changes)

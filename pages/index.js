@@ -62,10 +62,10 @@ const PjSheetListHolder = (props) => {
       <h3 css={{ textAlign: "center", fontSize: "2em" }}>Suas Fichas</h3>
       <PJSheetList
         pjs={[
-          { name: "Aratosh", img: "img/Aratosh.png" },
-          { name: "Praestes Solis", img: "img/Praestes.png" },
-          { name: "Dareon Silvermane", img: "img/Dareon.png" },
-          { name: "Uya", img: "img/Uya.png" },
+          { id: 1, name: "Aratosh", img: "img/Aratosh.png" },
+          { id: 2, name: "Praestes Solis", img: "img/Praestes.png" },
+          { id: 3, name: "Dareon Silvermane", img: "img/Dareon.png" },
+          { id: 4, name: "Uya", img: "img/Uya.png" },
         ]}
       />
     </div>
@@ -86,7 +86,9 @@ const PJSheetList = ({ pjs }) => {
       dataSource={pjs}
       renderItem={(pj) => (
         <List.Item>
-          <PJSheet name={pj.name} src={pj.img} />
+          <Link href={`/player-sheet/${pj.id}`}>
+            <a><PJSheet name={pj.name} src={pj.img || './img/beeholder-logo.png'} /></a>
+          </Link>          
         </List.Item>
       )}
     />
